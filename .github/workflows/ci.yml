@@ -1,0 +1,39 @@
+# .github/workflows/ci.yml
+name: CI Pipeline
+
+# 触发器：在推送到 main 分支或任何 Pull Request 时运行
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest # 使用最新的 Ubuntu 虚拟机
+
+    steps:
+      # 步骤1: 检出代码
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 步骤2: 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # 使用 Node.js 18
+          cache: 'npm' # 缓存 npm 依赖，加快后续构建速度
+
+      # 步骤3: 安装依赖
+      - name: Install Dependencies
+        # 使用 npm ci 而不是 install，它更快、更可靠，专门为自动化环境设计
+        run: npm ci
+
+      # 步骤4: 运行代码风格检查 (Lint)
+      - name: Run Linter
+        run: npm run lint
+
+      # 步骤5: 运行单元测试
+      - name: Run Tests
+        run: npm test
