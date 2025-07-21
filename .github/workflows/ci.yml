@@ -37,3 +37,11 @@ jobs:
       # 步骤5: 运行单元测试
       - name: Run Tests
         run: npm test
+
+
+      # 步骤6: SonarCloud Scan
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: SONAR_TOKEN # Provided by Actions
+          SONAR_TOKEN: 1a094629cfb27daa4500c394521a3a07faa8e3b6   # Mapped from Github secrets
